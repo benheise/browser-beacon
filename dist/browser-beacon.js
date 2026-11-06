@@ -1,5 +1,6 @@
 /*!
  * browser-beacon.js v1.2.0 (policy 2026-11-01)
+ * Copyright (c) 2026 Ben Heise. MIT License: https://github.com/benheise/browser-beacon/blob/main/LICENSE
  * Outdated-browser telemetry for an internal web portal.
  *
  * One self-contained file. No server-side code, no runtime dependencies, no

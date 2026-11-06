@@ -1,6 +1,7 @@
 'use strict';
 /*
  * browser-beacon receiver v1.0.0
+ * Copyright (c) 2026 Ben Heise. MIT License: https://github.com/benheise/browser-beacon/blob/main/LICENSE
  *
  * Accepts reports from browser-beacon.js ("http", "beacon" and "pixel" destinations),
  * keeps only those whose source address is inside ALLOWED_RANGES, and appends each one
