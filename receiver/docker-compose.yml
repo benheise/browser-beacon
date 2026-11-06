@@ -1,0 +1,46 @@
+# browser-beacon receiver: example deployment.
+#   docker compose up -d --build
+#   docker compose logs -f receiver
+#
+# Edit the environment block, place the TLS certificate and key in ./certs (the key must be
+# readable by uid 65532), and point browser-beacon.js destinations at
+# https://<this host>:8443/browser-beacon (http) and /browser-beacon.gif (pixel).
+services:
+  receiver:
+    build:
+      context: .
+      dockerfile: Dockerfile            # or Dockerfile.distroless (no shell in the image)
+    image: browser-beacon-receiver:1.0.0
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    ports:
+      - "8443:8443"
+    environment:
+      PORT: "8443"
+      ALLOWED_RANGES: "10.0.0.0/8,172.16.0.0/12"           # REQUIRED: company ranges
+      # Connections that docker-proxy relays (e.g. some IPv6 or hairpin traffic) arrive from
+      # this network's gateway; exclude the network so they can never pass the range check.
+      EXCLUDED_RANGES: "${BEACON_NET:-172.31.254.0/24}"
+      ALLOWED_ORIGINS: "https://portal.example.com"       # portal origin(s), comma separated
+      TLS_CERT_FILE: /certs/receiver.crt
+      TLS_KEY_FILE: /certs/receiver.key
+      LOG_RETENTION_DAYS: "0"                              # 0 = keep forever (set per your AU-11 policy)
+      # TRUSTED_PROXIES: "10.1.1.10/32"                    # if a reverse proxy sits in front
+    volumes:
+      - ./certs:/certs:ro
+      - beacon-logs:/var/log/browser-beacon
+    networks: [beacon]
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+
+networks:
+  beacon:
+    ipam:
+      config:
+        - subnet: "${BEACON_NET:-172.31.254.0/24}"
+
+volumes:
+  beacon-logs: {}

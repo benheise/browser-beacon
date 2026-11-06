@@ -1,0 +1,4 @@
+# Only what the image needs.
+*
+!server.js
+!test/
