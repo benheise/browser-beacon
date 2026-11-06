@@ -90,3 +90,7 @@ UAParser.js 2.x is AGPL-3.0 or paid, and ipaddr.js 2.x is not ES5, so neither up
 - [docs/performance-v1.1.md](docs/performance-v1.1.md): performance review and measurements
 - [docs/destinations-v1.2.md](docs/destinations-v1.2.md): destinations, receiver contract, local log, performance options considered
 - [receiver/README.md](receiver/README.md): receiver build, configuration, networking and operations
+
+## License
+
+[MIT](LICENSE). The bundled UAParser.js and ipaddr.js keep their own MIT notices, which are reproduced at the end of `dist/browser-beacon.js`.
